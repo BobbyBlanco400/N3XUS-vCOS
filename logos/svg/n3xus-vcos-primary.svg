@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="200" viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0e27;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a1f3a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00d9ff;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#7b2ff7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff006e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="200" fill="url(#bgGradient)" rx="10"/>
+  
+  <!-- Hexagonal icon element -->
+  <g transform="translate(50, 100)">
+    <polygon points="0,-30 26,-15 26,15 0,30 -26,15 -26,-15" 
+             fill="none" stroke="url(#textGradient)" stroke-width="3" 
+             filter="url(#glow)" opacity="0.8"/>
+    <polygon points="0,-20 17,-10 17,10 0,20 -17,10 -17,-10" 
+             fill="url(#textGradient)" opacity="0.3"/>
+    <circle cx="0" cy="0" r="5" fill="#00d9ff" filter="url(#glow)"/>
+  </g>
+  
+  <!-- N3XUS text -->
+  <text x="110" y="115" 
+        font-family="'Courier New', monospace" 
+        font-size="72" 
+        font-weight="bold" 
+        fill="url(#textGradient)" 
+        filter="url(#glow)">N3XUS</text>
+  
+  <!-- v-COS text -->
+  <text x="440" y="115" 
+        font-family="'Courier New', monospace" 
+        font-size="60" 
+        font-weight="300" 
+        fill="#00d9ff" 
+        opacity="0.9">v-COS</text>
+  
+  <!-- Tagline -->
+  <text x="110" y="145" 
+        font-family="Arial, sans-serif" 
+        font-size="16" 
+        fill="#00d9ff" 
+        opacity="0.7">VIRTUAL CREATIVE OPERATING SYSTEM</text>
+  
+  <!-- Version indicator -->
+  <circle cx="760" cy="30" r="3" fill="#00d9ff" opacity="0.5"/>
+  <circle cx="770" cy="30" r="3" fill="#7b2ff7" opacity="0.5"/>
+  <circle cx="780" cy="30" r="3" fill="#ff006e" opacity="0.5"/>
+</svg>
