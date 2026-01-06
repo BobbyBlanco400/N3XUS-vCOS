@@ -52,14 +52,43 @@ def create_investor_slide():
     
     # Add tagline and key points
     try:
-        # Try to use a nice font, fallback to default
-        try:
-            title_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 48)
-            subtitle_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 36)
-            body_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 28)
-        except:
+        # Try to use a nice font with cross-platform fallbacks
+        font_paths = [
+            # Linux
+            "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+            "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+            # macOS
+            "/System/Library/Fonts/Helvetica.ttc",
+            "/Library/Fonts/Arial.ttf",
+            # Windows
+            "C:\\Windows\\Fonts\\arial.ttf",
+            "C:\\Windows\\Fonts\\arialbd.ttf",
+        ]
+        
+        title_font = None
+        subtitle_font = None
+        body_font = None
+        
+        for font_path in font_paths:
+            try:
+                if "Bold" in font_path or "bd" in font_path:
+                    title_font = ImageFont.truetype(font_path, 48)
+                else:
+                    if subtitle_font is None:
+                        subtitle_font = ImageFont.truetype(font_path, 36)
+                    if body_font is None:
+                        body_font = ImageFont.truetype(font_path, 28)
+                if title_font and subtitle_font and body_font:
+                    break
+            except:
+                continue
+        
+        # Fallback to default if no fonts found
+        if not title_font:
             title_font = ImageFont.load_default()
+        if not subtitle_font:
             subtitle_font = ImageFont.load_default()
+        if not body_font:
             body_font = ImageFont.load_default()
         
         # Tagline
@@ -86,8 +115,10 @@ def create_investor_slide():
             draw.text((feature_x, feature_y), feature, fill='#7b2ff7', font=body_font)
             feature_y += 60
         
-        # Footer
-        footer_text = "Confidential Investor Presentation • 2026"
+        # Footer with dynamic year
+        from datetime import datetime
+        current_year = datetime.now().year
+        footer_text = f"Confidential Investor Presentation • {current_year}"
         footer_bbox = draw.textbbox((0, 0), footer_text, font=body_font)
         footer_width = footer_bbox[2] - footer_bbox[0]
         footer_x = (width - footer_width) // 2
