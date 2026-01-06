@@ -1,0 +1,31 @@
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Ignore build artifacts
+dist/
+build/
+*.log
+
+# Ignore temporary files
+tmp/
+temp/
+*.tmp
+
+# Ignore node modules if any
+node_modules/
+
+# Ignore Python cache if any
+__pycache__/
+*.pyc
+*.pyo
+
+# Keep PNG directory but ignore generated files initially
+logos/png/.gitkeep
