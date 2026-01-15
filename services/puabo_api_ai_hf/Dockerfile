@@ -10,7 +10,7 @@ WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm install --production
 
 # Copy application
 COPY server.js .

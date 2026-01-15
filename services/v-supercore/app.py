@@ -22,9 +22,9 @@ async def nexus_handshake(request: Request, call_next):
     
     # All other endpoints require handshake
     if request.headers.get("X-N3XUS-Handshake") != "55-45-17":
-        raise HTTPException(
+        return JSONResponse(
             status_code=451,
-            detail="N3XUS LAW VIOLATION: Missing or invalid handshake"
+            content={"error": "N3XUS LAW VIOLATION: Missing or invalid handshake"}
         )
     
     return await call_next(request)
