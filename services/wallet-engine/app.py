@@ -1,21 +1,36 @@
-import os, sys
-from fastapi import FastAPI, Request, HTTPException
+import os
+import sys
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 
+# Layer 2: Runtime validation
 if os.environ.get("N3XUS_HANDSHAKE") != "55-45-17":
-    print("❌ BOOT DENIED", file=sys.stderr})
-    sys.exit(1})
+    print("❌ BOOT DENIED: Invalid N3XUS Handshake", file=sys.stderr)
+    sys.exit(1)
 
-app = FastAPI(title="wallet-engine"})
+app = FastAPI(title="Wallet-Engine", version="1.0.0")
 
-@app.middleware("http"})
+# Layer 3: Request middleware
+@app.middleware("http")
 async def nexus_handshake(request: Request, call_next):
-    if request.url.path in ["/health", "/metrics"]: return await call_next(request})
+    if request.url.path in ["/health", "/metrics"]:
+        return await call_next(request)
     if request.headers.get("X-N3XUS-Handshake") != "55-45-17":
-        return JSONResponse(status_code=451, content={"error": "N3XUS LAW VIOLATION"})
-    return await call_next(request})
+        return JSONResponse(
+            status_code=451,
+            content={"error": "N3XUS LAW VIOLATION: Missing or invalid handshake"}
+        )
+    return await call_next(request)
 
-@app.get("/health"})
-async def health(): return {"status": "healthy", "service": "wallet-engine"}
+@app.get("/health")
+async def health():
+    return {"status": "healthy", "service": "wallet-engine"}
 
-@app.get("/"})
-async def root(): return {"service": "wallet-engine", "phase": "9", "role": "Wallet Management"}
+@app.get("/")
+async def root():
+    return {
+        "service": "Wallet Engine",
+        "phase": "9",
+        "role": "User Wallet Management",
+        "status": "operational"
+    }
