@@ -1,0 +1,125 @@
+{
+  "timestamp": "2026-01-09T09:52:28Z",
+  "service_responsibility_matrix": [
+    {
+      "service_name": "Backend API",
+      "claimed_responsibility": "Core API gateway and service orchestration",
+      "source_path": "backend/",
+      "proof_type": "HTTP response",
+      "observed_behavior": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it",
+      "canon_status": "BLOCKED",
+      "endpoint": "http://localhost:3000/api/health",
+      "evidence": {
+        "is_operational": false,
+        "status_code": null,
+        "response": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it"
+      }
+    },
+    {
+      "service_name": "Backend System Status",
+      "claimed_responsibility": "System health monitoring and status reporting",
+      "source_path": "backend/",
+      "proof_type": "HTTP response",
+      "observed_behavior": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it",
+      "canon_status": "BLOCKED",
+      "endpoint": "http://localhost:3000/api/system/status",
+      "evidence": {
+        "is_operational": false,
+        "status_code": null,
+        "response": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it"
+      }
+    },
+    {
+      "service_name": "Auth Service",
+      "claimed_responsibility": "User authentication and identity management",
+      "source_path": "backend/services/auth",
+      "proof_type": "HTTP response",
+      "observed_behavior": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it",
+      "canon_status": "BLOCKED",
+      "endpoint": "http://localhost:3000/api/services/auth/health",
+      "evidence": {
+        "is_operational": false,
+        "status_code": null,
+        "response": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it"
+      }
+    },
+    {
+      "service_name": "Streaming Service",
+      "claimed_responsibility": "Real-time streaming and WebSocket management",
+      "source_path": "services/streaming",
+      "proof_type": "HTTP response",
+      "observed_behavior": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it",
+      "canon_status": "BLOCKED",
+      "endpoint": "http://localhost:3000/api/services/streaming/health",
+      "evidence": {
+        "is_operational": false,
+        "status_code": null,
+        "response": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it"
+      }
+    },
+    {
+      "service_name": "nexus-backend",
+      "claimed_responsibility": "Core API gateway and service orchestration",
+      "source_path": "backend/",
+      "proof_type": "runtime_enumeration",
+      "observed_behavior": "not_found",
+      "canon_status": "not_running",
+      "runtime_type": "docker",
+      "endpoint": "http://localhost:3000",
+      "runtime_activity": false
+    },
+    {
+      "service_name": "nexus-auth",
+      "claimed_responsibility": "User authentication and identity management",
+      "source_path": "backend/services/auth",
+      "proof_type": "runtime_enumeration",
+      "observed_behavior": "not_found",
+      "canon_status": "not_running",
+      "runtime_type": "docker",
+      "endpoint": "http://localhost:3001",
+      "runtime_activity": false
+    },
+    {
+      "service_name": "nexus-streaming",
+      "claimed_responsibility": "Real-time streaming and WebSocket management",
+      "source_path": "services/streaming",
+      "proof_type": "runtime_enumeration",
+      "observed_behavior": "not_found",
+      "canon_status": "not_running",
+      "runtime_type": "docker",
+      "endpoint": "http://localhost:3002",
+      "runtime_activity": false
+    },
+    {
+      "service_name": "backend-api",
+      "claimed_responsibility": "Core API gateway",
+      "source_path": "backend/server.js",
+      "proof_type": "runtime_enumeration",
+      "observed_behavior": "not_found",
+      "canon_status": "not_running",
+      "runtime_type": "pm2",
+      "endpoint": "http://localhost:3000",
+      "runtime_activity": false
+    },
+    {
+      "service_name": "streaming-service",
+      "claimed_responsibility": "Streaming service",
+      "source_path": "services/streaming/index.js",
+      "proof_type": "runtime_enumeration",
+      "observed_behavior": "not_found",
+      "canon_status": "not_running",
+      "runtime_type": "pm2",
+      "endpoint": "http://localhost:3002",
+      "runtime_activity": false
+    }
+  ],
+  "analysis": {
+    "total_services": 9,
+    "verified": 0,
+    "degraded": 0,
+    "blocked": 9,
+    "ornamental": 0,
+    "services_with_evidence": 4,
+    "services_with_runtime": 5
+  }
+}

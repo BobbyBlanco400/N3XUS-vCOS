@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-01-09T09:52:11Z",
+  "docker_containers": [],
+  "pm2_processes": [],
+  "listening_ports": [],
+  "system_load": {
+    "load_1min": 0,
+    "load_5min": 0,
+    "load_15min": 0,
+    "raw": ""
+  },
+  "total_runtime_units": 0
+}

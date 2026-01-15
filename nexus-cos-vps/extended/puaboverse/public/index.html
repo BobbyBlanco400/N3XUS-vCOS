@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casino Nexus Lounge</title>
+    <style>
+        :root {
+            --primary: #8b5cf6;
+            --secondary: #ec4899;
+            --dark: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f8fafc;
+        }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--dark);
+            color: var(--text);
+            margin: 0;
+            padding: 2rem;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            border-color: var(--primary);
+        }
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .card-desc {
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="title">Casino Nexus Lounge</h1>
+        <p>Welcome to the ultimate digital entertainment experience</p>
+    </div>
+
+    <div class="grid">
+        <!-- Card 1 -->
+        <div class="card" onclick="window.location.href='/games/slots'">
+            <div class="icon">🎰</div>
+            <h2 class="card-title">Slots & Skill Games</h2>
+            <p class="card-desc">Play classic slots and skill-based challenges.</p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card" onclick="window.location.href='/games/table'">
+            <div class="icon">♠️</div>
+            <h2 class="card-title">Table Games</h2>
+            <p class="card-desc">Blackjack, Poker, and Roulette tables.</p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card" onclick="window.location.href='/games/live'">
+            <div class="icon">👩‍💼</div>
+            <h2 class="card-title">Live Dealers</h2>
+            <p class="card-desc">Real-time interaction with professional dealers.</p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card" onclick="window.location.href='/vr-casino'">
+            <div class="icon">🥽</div>
+            <h2 class="card-title">VR Casino</h2>
+            <p class="card-desc">Immersive 3D virtual reality gambling.</p>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card" onclick="window.location.href='/vip'">
+            <div class="icon">👑</div>
+            <h2 class="card-title">High Roller Suite</h2>
+            <p class="card-desc">Exclusive VIP tables and higher stakes.</p>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="card" onclick="window.location.href='/jackpots'">
+            <div class="icon">💰</div>
+            <h2 class="card-title">Progressive Jackpots</h2>
+            <p class="card-desc">Massive prize pools growing every second.</p>
+        </div>
+
+        <!-- Card 7 -->
+        <div class="card" onclick="window.location.href='/tournaments'">
+            <div class="icon">🏆</div>
+            <h2 class="card-title">Tournament Hub</h2>
+            <p class="card-desc">Compete in daily and weekly tournaments.</p>
+        </div>
+
+        <!-- Card 8 -->
+        <div class="card" onclick="window.location.href='/rewards'">
+            <div class="icon">🎁</div>
+            <h2 class="card-title">Loyalty Rewards</h2>
+            <p class="card-desc">Earn NexCoin and redeem for exclusive perks.</p>
+        </div>
+
+        <!-- Card 9 -->
+        <div class="card" onclick="window.location.href='/marketplace'">
+            <div class="icon">🛒</div>
+            <h2 class="card-title">Marketplace</h2>
+            <p class="card-desc">Buy, sell, and trade NFT assets.</p>
+        </div>
+    </div>
+</body>
+</html>

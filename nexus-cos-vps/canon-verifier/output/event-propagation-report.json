@@ -1,0 +1,108 @@
+{
+  "timestamp": "2026-01-09T09:52:28Z",
+  "canonical_events": [
+    {
+      "name": "Identity Created",
+      "source": "Auth Service",
+      "consumers": [
+        "Backend API",
+        "MetaTwin Service"
+      ],
+      "critical": true
+    },
+    {
+      "name": "MetaTwin Instantiated",
+      "source": "MetaTwin Service",
+      "consumers": [
+        "Backend API",
+        "Runtime Manager"
+      ],
+      "critical": true
+    },
+    {
+      "name": "Overlay Attached",
+      "source": "Runtime Manager",
+      "consumers": [
+        "Frontend",
+        "Mobile App"
+      ],
+      "critical": false
+    },
+    {
+      "name": "Order Placed",
+      "source": "Backend API",
+      "consumers": [
+        "Payment Service",
+        "Fulfillment Service"
+      ],
+      "critical": true
+    },
+    {
+      "name": "Hardware Registered",
+      "source": "Hardware Service",
+      "consumers": [
+        "MetaTwin Service",
+        "Lifecycle Manager"
+      ],
+      "critical": true
+    }
+  ],
+  "analysis": {
+    "total_events": 5,
+    "critical_events": 4,
+    "event_flows": [
+      {
+        "event": "Identity Created",
+        "source": "Auth Service",
+        "consumers": [
+          "Backend API",
+          "MetaTwin Service"
+        ],
+        "consumer_count": 2,
+        "critical": true
+      },
+      {
+        "event": "MetaTwin Instantiated",
+        "source": "MetaTwin Service",
+        "consumers": [
+          "Backend API",
+          "Runtime Manager"
+        ],
+        "consumer_count": 2,
+        "critical": true
+      },
+      {
+        "event": "Overlay Attached",
+        "source": "Runtime Manager",
+        "consumers": [
+          "Frontend",
+          "Mobile App"
+        ],
+        "consumer_count": 2,
+        "critical": false
+      },
+      {
+        "event": "Order Placed",
+        "source": "Backend API",
+        "consumers": [
+          "Payment Service",
+          "Fulfillment Service"
+        ],
+        "consumer_count": 2,
+        "critical": true
+      },
+      {
+        "event": "Hardware Registered",
+        "source": "Hardware Service",
+        "consumers": [
+          "MetaTwin Service",
+          "Lifecycle Manager"
+        ],
+        "consumer_count": 2,
+        "critical": true
+      }
+    ],
+    "potential_issues": []
+  },
+  "note": "Read-only analysis - actual event triggering requires system modification"
+}

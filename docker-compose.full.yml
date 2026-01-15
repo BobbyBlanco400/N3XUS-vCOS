@@ -1,0 +1,275 @@
+version: "3.9"
+
+services:
+  # Phase 3-4: Core Runtime
+  v-supercore:
+    build:
+      context: ./services/v-supercore
+      args:
+        N3XUS_HANDSHAKE: "55-45-17"
+    container_name: v-supercore
+    environment:
+      - N3XUS_HANDSHAKE=55-45-17
+    ports:
+      - "3001:3000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  puabo-api-ai-hf:
+    build:
+      context: ./services/puabo_api_ai_hf
+      args:
+        N3XUS_HANDSHAKE: "55-45-17"
+    container_name: puabo-api-ai-hf
+    environment:
+      - N3XUS_HANDSHAKE=55-45-17
+    ports:
+      - "3002:3000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Phase 5-6: Federation
+  federation-spine:
+    build:
+      context: ./services/federation-spine
+      args:
+        N3XUS_HANDSHAKE: "55-45-17"
+    container_name: federation-spine
+    environment:
+      - N3XUS_HANDSHAKE=55-45-17
+    ports:
+      - "3010:3000"
+    restart: unless-stopped
+
+  identity-registry:
+    build:
+      context: ./services/identity-registry
+      args:
+        N3XUS_HANDSHAKE: "55-45-17"
+    container_name: identity-registry
+    environment:
+      - N3XUS_HANDSHAKE=55-45-17
+    ports:
+      - "3011:3000"
+    restart: unless-stopped
+
+  federation-gateway:
+    build:
+      context: ./services/federation-gateway
+      args:
+        N3XUS_HANDSHAKE: "55-45-17"
+    container_name: federation-gateway
+    environment:
+      - N3XUS_HANDSHAKE=55-45-17
+    ports:
+      - "3012:3000"
+    restart: unless-stopped
+
+  attestation-service:
+    build:
+      context: ./services/attestation-service
+      args:
+        N3XUS_HANDSHAKE: "55-45-17"
+    container_name: attestation-service
+    environment:
+      - N3XUS_HANDSHAKE=55-45-17
+    ports:
+      - "3013:3000"
+    restart: unless-stopped
+
+  # Phase 7-12: Domain Services
+  casino-core:
+    build:
+      context: ./services/casino-core
+      args:
+        N3XUS_HANDSHAKE: "55-45-17"
+    container_name: casino-core
+    environment:
+      - N3XUS_HANDSHAKE=55-45-17
+    ports:
+      - "3020:3020"
+    restart: unless-stopped
+
+  ledger-engine:
+    build:
+      context: ./services/ledger-engine
+      args:
+        N3XUS_HANDSHAKE: "55-45-17"
+    container_name: ledger-engine
+    environment:
+      - N3XUS_HANDSHAKE=55-45-17
+    ports:
+      - "3030:3030"
+    restart: unless-stopped
+
+  wallet-engine:
+    build:
+      context: ./services/wallet-engine
+      args:
+        N3XUS_HANDSHAKE: "55-45-17"
+    container_name: wallet-engine
+    environment:
+      - N3XUS_HANDSHAKE=55-45-17
+    ports:
+      - "3040:3040"
+    restart: unless-stopped
+
+  treasury-core:
+    build:
+      context: ./services/treasury-core
+      args:
+        N3XUS_HANDSHAKE: "55-45-17"
+    container_name: treasury-core
+    environment:
+      - N3XUS_HANDSHAKE=55-45-17
+    ports:
+      - "3041:3041"
+    restart: unless-stopped
+
+  payout-engine:
+    build:
+      context: ./services/payout-engine
+      args:
+        N3XUS_HANDSHAKE: "55-45-17"
+    container_name: payout-engine
+    environment:
+      - N3XUS_HANDSHAKE=55-45-17
+    ports:
+      - "3050:3050"
+    restart: unless-stopped
+
+  earnings-oracle:
+    build:
+      context: ./services/earnings-oracle
+      args:
+        N3XUS_HANDSHAKE: "55-45-17"
+    container_name: earnings-oracle
+    environment:
+      - N3XUS_HANDSHAKE=55-45-17
+    ports:
+      - "3051:3051"
+    restart: unless-stopped
+
+  pmmg-media-engine:
+    build:
+      context: ./services/pmmg-media-engine
+      args:
+        N3XUS_HANDSHAKE: "55-45-17"
+    container_name: pmmg-media-engine
+    environment:
+      - N3XUS_HANDSHAKE=55-45-17
+    ports:
+      - "3060:3060"
+    restart: unless-stopped
+
+  royalty-engine:
+    build:
+      context: ./services/royalty-engine
+      args:
+        N3XUS_HANDSHAKE: "55-45-17"
+    container_name: royalty-engine
+    environment:
+      - N3XUS_HANDSHAKE=55-45-17
+    ports:
+      - "3061:3061"
+    restart: unless-stopped
+
+  governance-core:
+    build:
+      context: ./services/governance-core
+      args:
+        N3XUS_HANDSHAKE: "55-45-17"
+    container_name: governance-core
+    environment:
+      - N3XUS_HANDSHAKE=55-45-17
+    ports:
+      - "3070:3070"
+    restart: unless-stopped
+
+  constitution-engine:
+    build:
+      context: ./services/constitution-engine
+      args:
+        N3XUS_HANDSHAKE: "55-45-17"
+    container_name: constitution-engine
+    environment:
+      - N3XUS_HANDSHAKE=55-45-17
+    ports:
+      - "3071:3071"
+    restart: unless-stopped
+
+  # Nuisance Services: Compliance Layer
+  payment-partner:
+    build:
+      context: ./services/payment-partner
+      args:
+        N3XUS_HANDSHAKE: "55-45-17"
+    container_name: payment-partner
+    environment:
+      - N3XUS_HANDSHAKE=55-45-17
+      - PORT=4001
+    ports:
+      - "4001:4001"
+    restart: unless-stopped
+
+  jurisdiction-rules:
+    build:
+      context: ./services/jurisdiction-rules
+      args:
+        N3XUS_HANDSHAKE: "55-45-17"
+    container_name: jurisdiction-rules
+    environment:
+      - N3XUS_HANDSHAKE=55-45-17
+    ports:
+      - "4002:4002"
+    restart: unless-stopped
+
+  responsible-gaming:
+    build:
+      context: ./services/responsible-gaming
+      args:
+        N3XUS_HANDSHAKE: "55-45-17"
+    container_name: responsible-gaming
+    environment:
+      - N3XUS_HANDSHAKE=55-45-17
+      - PORT=4003
+    ports:
+      - "4003:4003"
+    restart: unless-stopped
+
+  legal-entity:
+    build:
+      context: ./services/legal-entity
+      args:
+        N3XUS_HANDSHAKE: "55-45-17"
+    container_name: legal-entity
+    environment:
+      - N3XUS_HANDSHAKE=55-45-17
+    ports:
+      - "4004:4004"
+    restart: unless-stopped
+
+  explicit-opt-in:
+    build:
+      context: ./services/explicit-opt-in
+      args:
+        N3XUS_HANDSHAKE: "55-45-17"
+    container_name: explicit-opt-in
+    environment:
+      - N3XUS_HANDSHAKE=55-45-17
+      - PORT=4005
+    ports:
+      - "4005:4005"
+    restart: unless-stopped
+
+networks:
+  default:
+    driver: bridge

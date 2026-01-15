@@ -1,0 +1,21 @@
+import os, sys
+from fastapi import FastAPI, Request, HTTPException
+
+if os.environ.get("N3XUS_HANDSHAKE") != "55-45-17":
+    print("❌ BOOT DENIED", file=sys.stderr)
+    sys.exit(1)
+
+app = FastAPI(title="ledger-engine")
+
+@app.middleware("http")
+async def nexus_handshake(request: Request, call_next):
+    if request.url.path in ["/health", "/metrics"]: return await call_next(request)
+    if request.headers.get("X-N3XUS-Handshake") != "55-45-17":
+        raise HTTPException(status_code=451, detail="N3XUS LAW VIOLATION")
+    return await call_next(request)
+
+@app.get("/health")
+async def health(): return {"status": "healthy", "service": "ledger-engine"}
+
+@app.get("/")
+async def root(): return {"service": "ledger-engine", "phase": "8", "role": "Ledger Management"}

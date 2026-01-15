@@ -1,0 +1,52 @@
+{
+  "timestamp": "2026-01-09T09:52:11Z",
+  "services_tested": [
+    {
+      "name": "Backend API",
+      "responsibility": "Core API gateway and service orchestration",
+      "endpoint": "http://localhost:3000/api/health",
+      "source_path": "backend/",
+      "proof_type": "HTTP response",
+      "is_operational": false,
+      "status_code": null,
+      "message": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it",
+      "category": "BLOCKED"
+    },
+    {
+      "name": "Backend System Status",
+      "responsibility": "System health monitoring and status reporting",
+      "endpoint": "http://localhost:3000/api/system/status",
+      "source_path": "backend/",
+      "proof_type": "HTTP response",
+      "is_operational": false,
+      "status_code": null,
+      "message": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it",
+      "category": "BLOCKED"
+    },
+    {
+      "name": "Auth Service",
+      "responsibility": "User authentication and identity management",
+      "endpoint": "http://localhost:3000/api/services/auth/health",
+      "source_path": "backend/services/auth",
+      "proof_type": "HTTP response",
+      "is_operational": false,
+      "status_code": null,
+      "message": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it",
+      "category": "BLOCKED"
+    },
+    {
+      "name": "Streaming Service",
+      "responsibility": "Real-time streaming and WebSocket management",
+      "endpoint": "http://localhost:3000/api/services/streaming/health",
+      "source_path": "services/streaming",
+      "proof_type": "HTTP response",
+      "is_operational": false,
+      "status_code": null,
+      "message": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it",
+      "category": "BLOCKED"
+    }
+  ],
+  "verified_count": 0,
+  "degraded_count": 0,
+  "blocked_count": 4
+}

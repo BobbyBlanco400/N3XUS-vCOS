@@ -1,0 +1,65 @@
+{
+  "timestamp": "2026-01-09T09:52:28Z",
+  "docker_mappings": [
+    {
+      "container_name": "nexus-backend",
+      "repo_path": "backend/",
+      "runtime": "docker",
+      "interfaces": [
+        "http://localhost:3000"
+      ],
+      "declared_responsibility": "Core API gateway and service orchestration",
+      "observed_activity": false,
+      "canon_status": "not_running"
+    },
+    {
+      "container_name": "nexus-auth",
+      "repo_path": "backend/services/auth",
+      "runtime": "docker",
+      "interfaces": [
+        "http://localhost:3001"
+      ],
+      "declared_responsibility": "User authentication and identity management",
+      "observed_activity": false,
+      "canon_status": "not_running"
+    },
+    {
+      "container_name": "nexus-streaming",
+      "repo_path": "services/streaming",
+      "runtime": "docker",
+      "interfaces": [
+        "http://localhost:3002"
+      ],
+      "declared_responsibility": "Real-time streaming and WebSocket management",
+      "observed_activity": false,
+      "canon_status": "not_running"
+    }
+  ],
+  "pm2_mappings": [
+    {
+      "process_name": "backend-api",
+      "repo_path": "backend/server.js",
+      "runtime": "pm2",
+      "interfaces": [
+        "http://localhost:3000"
+      ],
+      "declared_responsibility": "Core API gateway",
+      "observed_activity": false,
+      "canon_status": "not_running"
+    },
+    {
+      "process_name": "streaming-service",
+      "repo_path": "services/streaming/index.js",
+      "runtime": "pm2",
+      "interfaces": [
+        "http://localhost:3002"
+      ],
+      "declared_responsibility": "Streaming service",
+      "observed_activity": false,
+      "canon_status": "not_running"
+    }
+  ],
+  "total_mappings": 5,
+  "verified_count": 0,
+  "not_running_count": 5
+}
