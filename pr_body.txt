@@ -1,0 +1,29 @@
+N3XUS v-COS Full Stack Launch — Phases 3 & 4
+
+This PR includes the complete canonical production stack, Codespaces sandbox, Phase 3 & 4 bootstrap, ledger-Firebase mirroring, Super-Core + AI orchestration, and launch instructions. Fully N3XUS LAW compliant.
+
+**Included files and updates:**
+- docker-compose.yml (full production stack)
+- docker-compose.codespaces.yml (sandbox / dev testing)
+- scripts/bootstrap-phase3-4.sh (Phase 3 & 4 ignition and validation)
+- README_LAUNCH.md (launch instructions)
+- DEPLOYMENT_ONE_LINER.md (canonical sovereign one-liner)
+- Founding Creatives Launch infrastructure
+- Monetization ecosystem modules
+- Super-Core / v-SuperCore adapter integration
+- Ledger mirroring to Firebase
+- N3XUS LAW compliance enforcement
+
+**Usage / Next Steps:**
+1. Initialize infrastructure:
+   bash scripts/bootstrap-phase3-4.sh
+2. Open Founding Creatives Launch Window:
+   const service = new RegistrationService({ maxFoundingSlots: 100 });
+   await service.openLaunchWindow();
+3. Verify deployment with canonical one-liner:
+   bash DEPLOYMENT_ONE_LINER.md
+
+Status: Production-ready pending final launch.
+
+-- End of PR Body --
+
