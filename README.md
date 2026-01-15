@@ -1,6 +1,6 @@
 <div align="center">
 
-![N3XUS v-COS Logo](logos/svg/n3xus-vcos-primary.svg)
+![N3XUS v-COS Logo](logos/png/now.png)
 
 # N3XUS v-COS
 
