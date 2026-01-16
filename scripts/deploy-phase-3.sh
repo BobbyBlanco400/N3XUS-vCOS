@@ -6,8 +6,9 @@ VPS_HOST="root@72.62.86.217"
 VPS_KEY="$HOME/.ssh/id_ed25519_vps"
 
 echo "╔════════════════════════════════════════════════════════════╗"
-echo "║   N3XUS v-COS Canonical Phase 3 Deployment                ║"
+echo "║   N3XUS v-COS Canonical Phases 3 & 4 Deployment           ║"
 echo "║   Continuing from Phases 1, 2, 2.5                        ║"
+echo "║   Then 48-hour settle mode                                ║"
 echo "╚════════════════════════════════════════════════════════════╝"
 echo ""
 echo "Waiting for VPS to become accessible..."
@@ -78,17 +79,33 @@ sleep 25
 echo "✅ Phase 3 Federation Layer deployed!"
 echo ""
 
+echo "Step 4: Deploy Phase 4 - Domain Services"
+echo "  - casino-core (gaming)"
+echo "  - ledger-engine (financial ledger)"
+echo ""
+
+docker compose -f docker-compose.full.yml up -d --build \
+    casino-core \
+    ledger-engine
+
+sleep 20
+
+echo "✅ Phase 4 Domain Services deployed!"
+echo ""
+
 echo "╔════════════════════════════════════════════════════════════╗"
-echo "║           Phase 3 Deployment Complete!                    ║"
+echo "║        Phases 3 & 4 Deployment Complete!                  ║"
+echo "║        Entering 48-hour Settle Mode                       ║"
 echo "╚════════════════════════════════════════════════════════════╝"
 echo ""
 
 # Status check
 RUNNING=$(docker compose -f docker-compose.full.yml ps 2>/dev/null | grep -c "Up")
-echo "Services Running: $RUNNING / 8"
+echo "Services Running: $RUNNING / 10"
 echo "  - 2 Infrastructure (Postgres, Redis)"
 echo "  - 2 Core Runtime (Phase 1-2)"
 echo "  - 4 Federation (Phase 3)"
+echo "  - 2 Domain Services (Phase 4)"
 echo ""
 
 # Resources
@@ -116,14 +133,15 @@ else
 fi
 
 echo ""
-echo "Next Steps:"
+echo "Deployment Status:"
 echo "  ✅ Phase 1 & 2: Complete"
 echo "  ✅ Phase 2.5: Complete"
 echo "  ✅ Phase 3: Complete (Federation Layer)"
-echo "  📋 Phase 4: Ready to deploy next"
+echo "  ✅ Phase 4: Complete (Domain Services)"
+echo "  ⏸️  Settle Mode: Active for 48 hours"
 echo ""
-echo "To deploy Phase 4 (Domain Services), run:"
-echo "  bash scripts/deploy-phase-4.sh"
+echo "System will stabilize and monitor for 48 hours."
+echo "Next deployment window: $(date -d '+2 days' '+%B %d, %Y')"
 PHASE3
 
 echo ""
