@@ -1,0 +1,138 @@
+# N3XUS COS v3.0 - Complete 98+ Service Architecture
+# Port Allocation and Service Registry
+
+# PHASE 3-4: Core Runtime (3001-3002)
+phase3_4:
+  - { name: v-supercore, port: 3001, tech: python, role: "Governance Authority" }
+  - { name: puabo-api-ai-hf, port: 3002, tech: node, role: "AI Gateway" }
+
+# PHASE 5-6: Federation Layer (3010-3013)
+phase5_6:
+  - { name: federation-spine, port: 3010, tech: python, role: "Federation Coordinator" }
+  - { name: identity-registry, port: 3011, tech: python, role: "Sovereign Identity" }
+  - { name: federation-gateway, port: 3012, tech: node, role: "Federation API Gateway" }
+  - { name: attestation-service, port: 3013, tech: python, role: "Cryptographic Attestation" }
+
+# PHASE 7-8: Casino Domain (3020-3021)
+phase7_8:
+  - { name: casino-core, port: 3020, tech: python, role: "Casino NEXUS Authority" }
+  - { name: ledger-engine, port: 3021, tech: python, role: "Immutable Transaction Ledger" }
+
+# PHASE 9: Financial Core (3030-3032)
+phase9:
+  - { name: wallet-engine, port: 3030, tech: python, role: "User Wallet Management" }
+  - { name: treasury-core, port: 3031, tech: python, role: "System Treasury" }
+  - { name: payout-engine, port: 3032, tech: python, role: "Payout Orchestration" }
+
+# PHASE 10: Earnings & Media (3040-3042)
+phase10:
+  - { name: earnings-oracle, port: 3040, tech: python, role: "Earnings Calculation" }
+  - { name: pmmg-media-engine, port: 3041, tech: python, role: "PMMG Media Processing" }
+  - { name: royalty-engine, port: 3042, tech: python, role: "Royalty Distribution" }
+
+# PHASE 11-12: Governance (3050-3051)
+phase11_12:
+  - { name: governance-core, port: 3050, tech: python, role: "Governance Proposals" }
+  - { name: constitution-engine, port: 3051, tech: python, role: "Constitutional Rules" }
+
+# COMPLIANCE LAYER (4001-4005)
+compliance:
+  - { name: payment-partner, port: 4001, tech: node, role: "Payment Processor Integration" }
+  - { name: jurisdiction-rules, port: 4002, tech: python, role: "Geographic Compliance" }
+  - { name: responsible-gaming, port: 4003, tech: node, role: "Player Protection" }
+  - { name: legal-entity, port: 4004, tech: python, role: "Legal Entity Management" }
+  - { name: explicit-opt-in, port: 4005, tech: node, role: "User Consent Management" }
+
+# PUABO UNIVERSE (4010-4025)
+puabo_universe:
+  - { name: puabo-nexus-core, port: 4010, tech: python, role: "PUABO Nexus Central" }
+  - { name: puabo-dsp-core, port: 4011, tech: python, role: "DSP Platform Core" }
+  - { name: puabo-dsp-metadata-mgr, port: 4012, tech: node, role: "DSP Metadata Manager" }
+  - { name: puabo-dsp-distribution, port: 4013, tech: python, role: "DSP Distribution Engine" }
+  - { name: puabo-blac-core, port: 4014, tech: python, role: "BLAC Platform Core" }
+  - { name: puabo-blac-creator-hub, port: 4015, tech: node, role: "BLAC Creator Hub" }
+  - { name: puabo-blac-marketplace, port: 4016, tech: python, role: "BLAC Marketplace" }
+  - { name: puabo-nuki-core, port: 4017, tech: python, role: "NUKI Platform Core" }
+  - { name: puabo-nuki-inventory-mgr, port: 4018, tech: node, role: "NUKI Inventory Manager" }
+  - { name: puabo-nuki-royalty, port: 4019, tech: python, role: "NUKI Royalty Engine" }
+  - { name: puaboverse-gateway, port: 4020, tech: node, role: "PUABOVERSE Gateway" }
+  - { name: puaboverse-social, port: 4021, tech: python, role: "Social Features" }
+  - { name: puaboverse-analytics, port: 4022, tech: python, role: "Analytics Engine" }
+  - { name: puabo-auth-service, port: 4023, tech: python, role: "PUABO Authentication" }
+  - { name: puabo-notification-hub, port: 4024, tech: node, role: "Notification Hub" }
+  - { name: puabo-search-engine, port: 4025, tech: python, role: "Search & Discovery" }
+
+# V-SUITE (4030-4042)
+v_suite:
+  - { name: v-creative-studio, port: 4030, tech: python, role: "Creative Studio Platform" }
+  - { name: v-media-processor, port: 4031, tech: python, role: "Media Processing" }
+  - { name: v-rights-manager, port: 4032, tech: python, role: "Rights Management" }
+  - { name: v-distribution-engine, port: 4033, tech: python, role: "Distribution Engine" }
+  - { name: v-analytics-core, port: 4034, tech: python, role: "Analytics Platform" }
+  - { name: v-audience-insights, port: 4035, tech: python, role: "Audience Insights" }
+  - { name: v-monetization-hub, port: 4036, tech: python, role: "Monetization Hub" }
+  - { name: v-collaboration-space, port: 4037, tech: node, role: "Collaboration Platform" }
+  - { name: v-asset-library, port: 4038, tech: python, role: "Asset Library" }
+  - { name: v-workflow-engine, port: 4039, tech: python, role: "Workflow Automation" }
+  - { name: v-quality-control, port: 4040, tech: python, role: "Quality Control" }
+  - { name: v-archive-vault, port: 4041, tech: python, role: "Archive & Vault" }
+  - { name: v-api-gateway, port: 4042, tech: node, role: "V-Suite API Gateway" }
+
+# EXTENDED SERVICES (4051-4099)
+extended:
+  - { name: data-lake-manager, port: 4051, tech: python, role: "Data Lake Management" }
+  - { name: ml-training-service, port: 4052, tech: python, role: "ML Model Training" }
+  - { name: ml-inference-engine, port: 4053, tech: python, role: "ML Inference" }
+  - { name: recommendation-engine, port: 4054, tech: python, role: "Recommendation System" }
+  - { name: fraud-detection, port: 4055, tech: python, role: "Fraud Detection" }
+  - { name: kyc-verification, port: 4056, tech: python, role: "KYC Verification" }
+  - { name: aml-screening, port: 4057, tech: python, role: "AML Screening" }
+  - { name: content-moderation, port: 4058, tech: python, role: "Content Moderation" }
+  - { name: abuse-prevention, port: 4059, tech: python, role: "Abuse Prevention" }
+  - { name: geolocation-service, port: 4060, tech: python, role: "Geolocation Service" }
+  - { name: tax-compliance, port: 4061, tech: python, role: "Tax Compliance" }
+  - { name: regulatory-reporting, port: 4062, tech: python, role: "Regulatory Reporting" }
+  - { name: audit-trail, port: 4063, tech: python, role: "Audit Trail" }
+  - { name: backup-service, port: 4064, tech: python, role: "Backup & Recovery" }
+  - { name: disaster-recovery, port: 4065, tech: python, role: "Disaster Recovery" }
+  - { name: cdn-manager, port: 4066, tech: node, role: "CDN Management" }
+  - { name: cache-coordinator, port: 4067, tech: python, role: "Cache Coordination" }
+  - { name: queue-manager, port: 4068, tech: python, role: "Queue Management" }
+  - { name: event-bus, port: 4069, tech: node, role: "Event Bus" }
+  - { name: webhook-dispatcher, port: 4070, tech: node, role: "Webhook Dispatcher" }
+  - { name: email-service, port: 4071, tech: python, role: "Email Service" }
+  - { name: sms-service, port: 4072, tech: python, role: "SMS Service" }
+  - { name: push-notification, port: 4073, tech: node, role: "Push Notifications" }
+  - { name: file-storage, port: 4074, tech: python, role: "File Storage" }
+  - { name: object-storage, port: 4075, tech: python, role: "Object Storage" }
+  - { name: encryption-service, port: 4076, tech: python, role: "Encryption Service" }
+  - { name: key-management, port: 4077, tech: python, role: "Key Management" }
+  - { name: certificate-authority, port: 4078, tech: python, role: "Certificate Authority" }
+  - { name: session-manager, port: 4079, tech: python, role: "Session Management" }
+  - { name: rate-limiter, port: 4080, tech: python, role: "Rate Limiting" }
+  - { name: circuit-breaker, port: 4081, tech: python, role: "Circuit Breaker" }
+  - { name: load-balancer-config, port: 4082, tech: node, role: "Load Balancer Config" }
+  - { name: service-mesh-control, port: 4083, tech: python, role: "Service Mesh Control" }
+  - { name: api-versioning, port: 4084, tech: node, role: "API Versioning" }
+  - { name: schema-registry, port: 4085, tech: python, role: "Schema Registry" }
+  - { name: feature-flags, port: 4086, tech: python, role: "Feature Flags" }
+  - { name: ab-testing, port: 4087, tech: python, role: "A/B Testing" }
+  - { name: performance-monitor, port: 4088, tech: python, role: "Performance Monitoring" }
+  - { name: log-aggregator, port: 4089, tech: python, role: "Log Aggregation" }
+  - { name: metrics-collector, port: 4090, tech: python, role: "Metrics Collection" }
+  - { name: tracing-service, port: 4091, tech: python, role: "Distributed Tracing" }
+  - { name: alerting-engine, port: 4092, tech: python, role: "Alerting Engine" }
+  - { name: incident-manager, port: 4093, tech: python, role: "Incident Management" }
+  - { name: status-page, port: 4094, tech: node, role: "Status Page" }
+  - { name: documentation-hub, port: 4095, tech: node, role: "Documentation Hub" }
+  - { name: developer-portal, port: 4096, tech: node, role: "Developer Portal" }
+  - { name: sandbox-environment, port: 4097, tech: python, role: "Sandbox Environment" }
+  - { name: integration-testing, port: 4098, tech: python, role: "Integration Testing" }
+  - { name: chaos-engineering, port: 4099, tech: python, role: "Chaos Engineering" }
+
+# INFRASTRUCTURE
+infrastructure:
+  - { name: postgres, port: 5432, tech: postgres, role: "PostgreSQL 15 Database" }
+  - { name: redis, port: 6379, tech: redis, role: "Redis 7 Cache" }
+
+# Total Services: 98 microservices + 2 infrastructure = 100 containers

@@ -1,0 +1,12 @@
+{
+  "stack_name": "N3XUS Creator Stack",
+  "version": "1.0.0",
+  "type": "mini-platform",
+  "compliance": "55-45-17",
+  "components": [
+    "frontend-shell",
+    "service-layer",
+    "build-pipeline",
+    "notarization-engine"
+  ]
+}

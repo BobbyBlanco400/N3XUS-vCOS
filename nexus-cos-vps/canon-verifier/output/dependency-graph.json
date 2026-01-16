@@ -1,0 +1,84 @@
+{
+  "timestamp": "2026-01-16T19:40:52Z",
+  "dependency_graph": {
+    "Backend API": {
+      "depends_on": [
+        "Auth Service",
+        "Database",
+        "Redis"
+      ],
+      "consumed_by": [
+        "Frontend",
+        "Mobile App"
+      ],
+      "interfaces": [
+        "http://localhost:3000"
+      ],
+      "critical": true
+    },
+    "Auth Service": {
+      "depends_on": [
+        "Database",
+        "Redis"
+      ],
+      "consumed_by": [
+        "Backend API",
+        "All Services"
+      ],
+      "interfaces": [
+        "http://localhost:3001"
+      ],
+      "critical": true
+    },
+    "Streaming Service": {
+      "depends_on": [
+        "Backend API",
+        "Redis"
+      ],
+      "consumed_by": [
+        "Frontend",
+        "Mobile App"
+      ],
+      "interfaces": [
+        "http://localhost:3002"
+      ],
+      "critical": false
+    },
+    "Database": {
+      "depends_on": [],
+      "consumed_by": [
+        "Backend API",
+        "Auth Service",
+        "Streaming Service"
+      ],
+      "interfaces": [
+        "postgresql://localhost:5432"
+      ],
+      "critical": true
+    },
+    "Redis": {
+      "depends_on": [],
+      "consumed_by": [
+        "Backend API",
+        "Auth Service",
+        "Streaming Service"
+      ],
+      "interfaces": [
+        "redis://localhost:6379"
+      ],
+      "critical": true
+    }
+  },
+  "analysis": {
+    "total_services": 5,
+    "total_edges": 7,
+    "dead_links": [],
+    "critical_services": [
+      "Backend API",
+      "Auth Service",
+      "Database",
+      "Redis"
+    ],
+    "dependency_chains": []
+  }
+}

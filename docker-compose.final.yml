@@ -1,0 +1,55 @@
+version: "3.9"
+
+services:
+  v-supercore:
+    build:
+      context: ./services/v-supercore
+    container_name: v-supercore
+    restart: unless-stopped
+
+  puabo_api_ai_hf:
+    build:
+      context: ./services/puabo_api_ai_hf
+    container_name: puabo_api_ai_hf
+    restart: unless-stopped
+
+  ledger-mgr:
+    build:
+      context: ./services/ledger-mgr
+    container_name: ledger-mgr
+    restart: unless-stopped
+
+  founding-creatives:
+    build:
+      context: ./services/founding-creatives
+    container_name: founding-creatives
+    restart: unless-stopped
+
+  puabo-nexus-driver-app-backend:
+    build:
+      context: ./services/puabo-nexus-driver-app-backend
+    container_name: puabo-nexus-driver-app-backend
+    restart: unless-stopped
+
+  puaboverse-v2:
+    build:
+      context: ./services/puaboverse-v2
+    container_name: puaboverse-v2
+    restart: unless-stopped
+
+  puabo-nuki-inventory-mgr:
+    build:
+      context: ./services/puabo-nuki-inventory-mgr
+    container_name: puabo-nuki-inventory-mgr
+    restart: unless-stopped
+
+  puabo-dsp-metadata-mgr:
+    build:
+      context: ./services/puabo-dsp-metadata-mgr
+    container_name: puabo-dsp-metadata-mgr
+    restart: unless-stopped
+
+networks:
+  default:
+    driver: bridge
+

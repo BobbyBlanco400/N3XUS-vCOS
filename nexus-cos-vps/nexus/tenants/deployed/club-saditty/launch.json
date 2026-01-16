@@ -1,0 +1,9 @@
+{
+  "launch_config": {
+    "env": "production",
+    "mode": "spa-static",
+    "engine": "nginx-static-spa",
+    "health_check": "/health",
+    "verification": "strict"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "api-versioning",
+  "version": "3.0.0",
+  "description": "API Versioning",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

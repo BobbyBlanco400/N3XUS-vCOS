@@ -1,0 +1,6 @@
+{
+  "media": {
+    "engine": "PMMG",
+    "capabilities": ["start-stream", "stop-stream", "session-health"]
+  }
+}

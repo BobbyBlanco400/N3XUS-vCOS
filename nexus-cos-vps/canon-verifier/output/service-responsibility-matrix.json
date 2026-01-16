@@ -1,0 +1,52 @@
+{
+  "timestamp": "2026-01-16T19:40:51Z",
+  "services_tested": [
+    {
+      "name": "Backend API",
+      "responsibility": "Core API gateway and service orchestration",
+      "endpoint": "http://localhost:3000/api/health",
+      "source_path": "backend/",
+      "proof_type": "HTTP response",
+      "is_operational": false,
+      "status_code": null,
+      "message": "Connection failed: [Errno 111] Connection refused",
+      "category": "BLOCKED"
+    },
+    {
+      "name": "Backend System Status",
+      "responsibility": "System health monitoring and status reporting",
+      "endpoint": "http://localhost:4000/api/system/status",
+      "source_path": "backend/",
+      "proof_type": "HTTP response",
+      "is_operational": false,
+      "status_code": null,
+      "message": "Connection failed: [Errno 111] Connection refused",
+      "category": "BLOCKED"
+    },
+    {
+      "name": "Auth Service",
+      "responsibility": "User authentication and identity management",
+      "endpoint": "http://localhost:3001/health",
+      "source_path": "backend/services/auth",
+      "proof_type": "HTTP response",
+      "is_operational": true,
+      "status_code": 200,
+      "message": "HTTP 200",
+      "category": "VERIFIED"
+    },
+    {
+      "name": "Streaming Service",
+      "responsibility": "Real-time streaming and WebSocket management",
+      "endpoint": "http://localhost:3002/health",
+      "source_path": "services/streaming",
+      "proof_type": "HTTP response",
+      "is_operational": true,
+      "status_code": 200,
+      "message": "HTTP 200",
+      "category": "VERIFIED"
+    }
+  ],
+  "verified_count": 2,
+  "degraded_count": 0,
+  "blocked_count": 2
+}

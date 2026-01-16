@@ -1,0 +1,9 @@
+{
+  "name": "puaboverse-gateway",
+  "version": "3.0.0",
+  "description": "PUABOVERSE Gateway",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

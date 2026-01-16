@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  v-supercore:
+    build:
+      context: ./services/v-supercore
+      dockerfile: Dockerfile
+    container_name: v-supercore-codespaces
+    restart: always
+    ports:
+      - "3500:3500"
+    networks:
+      - n3xus-codespaces
+
+  puabo_api_ai_hf:
+    build:
+      context: ./services/puabo_api_ai_hf
+      dockerfile: Dockerfile
+    container_name: puabo_api_ai_hf-codespaces
+    restart: always
+    depends_on:
+      - v-supercore
+    networks:
+      - n3xus-codespaces
+
+networks:
+  n3xus-codespaces:
+    driver: bridge
