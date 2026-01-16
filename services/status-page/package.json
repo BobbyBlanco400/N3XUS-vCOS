@@ -1,0 +1,9 @@
+{
+  "name": "status-page",
+  "version": "3.0.0",
+  "description": "Status Page",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

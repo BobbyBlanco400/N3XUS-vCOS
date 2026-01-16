@@ -1,0 +1,9 @@
+{
+  "name": "push-notification",
+  "version": "3.0.0",
+  "description": "Push Notifications",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

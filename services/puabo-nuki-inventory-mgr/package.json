@@ -1,0 +1,9 @@
+{
+  "name": "puabo-nuki-inventory-mgr",
+  "version": "3.0.0",
+  "description": "NUKI Inventory Manager",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "event-bus",
+  "version": "3.0.0",
+  "description": "Event Bus",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

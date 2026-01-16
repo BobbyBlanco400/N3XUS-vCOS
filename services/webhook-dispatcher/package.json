@@ -1,0 +1,9 @@
+{
+  "name": "webhook-dispatcher",
+  "version": "3.0.0",
+  "description": "Webhook Dispatcher",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

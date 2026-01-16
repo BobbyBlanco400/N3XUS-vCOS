@@ -1,275 +1,2614 @@
-version: "3.9"
-
+version: '3.8'
 services:
-  # Phase 3-4: Core Runtime
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: nexus_db
+      POSTGRES_USER: nexus
+      POSTGRES_PASSWORD: nexus_secure_pass
+    volumes:
+    - postgres-data:/var/lib/postgresql/data
+    networks:
+    - nexus-net
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - pg_isready -U nexus
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes
+    volumes:
+    - redis-data:/data
+    networks:
+    - nexus-net
+    healthcheck:
+      test:
+      - CMD
+      - redis-cli
+      - ping
+      interval: 10s
+      timeout: 5s
+      retries: 5
   v-supercore:
     build:
       context: ./services/v-supercore
       args:
-        N3XUS_HANDSHAKE: "55-45-17"
+        N3XUS_HANDSHAKE: 55-45-17
     container_name: v-supercore
     environment:
-      - N3XUS_HANDSHAKE=55-45-17
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
     ports:
-      - "3001:3000"
-    restart: unless-stopped
+    - 3001:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
       interval: 30s
       timeout: 10s
       retries: 3
-
+      start_period: 40s
+    restart: unless-stopped
   puabo-api-ai-hf:
     build:
-      context: ./services/puabo_api_ai_hf
+      context: ./services/puabo-api-ai-hf
       args:
-        N3XUS_HANDSHAKE: "55-45-17"
+        N3XUS_HANDSHAKE: 55-45-17
     container_name: puabo-api-ai-hf
     environment:
-      - N3XUS_HANDSHAKE=55-45-17
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
     ports:
-      - "3002:3000"
-    restart: unless-stopped
+    - 3002:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
       interval: 30s
       timeout: 10s
       retries: 3
-
-  # Phase 5-6: Federation
+      start_period: 40s
+    restart: unless-stopped
   federation-spine:
     build:
       context: ./services/federation-spine
       args:
-        N3XUS_HANDSHAKE: "55-45-17"
+        N3XUS_HANDSHAKE: 55-45-17
     container_name: federation-spine
     environment:
-      - N3XUS_HANDSHAKE=55-45-17
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
     ports:
-      - "3010:3000"
+    - 3010:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
-
   identity-registry:
     build:
       context: ./services/identity-registry
       args:
-        N3XUS_HANDSHAKE: "55-45-17"
+        N3XUS_HANDSHAKE: 55-45-17
     container_name: identity-registry
     environment:
-      - N3XUS_HANDSHAKE=55-45-17
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
     ports:
-      - "3011:3000"
+    - 3011:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
-
   federation-gateway:
     build:
       context: ./services/federation-gateway
       args:
-        N3XUS_HANDSHAKE: "55-45-17"
+        N3XUS_HANDSHAKE: 55-45-17
     container_name: federation-gateway
     environment:
-      - N3XUS_HANDSHAKE=55-45-17
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
     ports:
-      - "3012:3000"
+    - 3012:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
-
   attestation-service:
     build:
       context: ./services/attestation-service
       args:
-        N3XUS_HANDSHAKE: "55-45-17"
+        N3XUS_HANDSHAKE: 55-45-17
     container_name: attestation-service
     environment:
-      - N3XUS_HANDSHAKE=55-45-17
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
     ports:
-      - "3013:3000"
+    - 3013:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
-
-  # Phase 7-12: Domain Services
   casino-core:
     build:
       context: ./services/casino-core
       args:
-        N3XUS_HANDSHAKE: "55-45-17"
+        N3XUS_HANDSHAKE: 55-45-17
     container_name: casino-core
     environment:
-      - N3XUS_HANDSHAKE=55-45-17
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
     ports:
-      - "3020:3020"
+    - 3020:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
-
   ledger-engine:
     build:
       context: ./services/ledger-engine
       args:
-        N3XUS_HANDSHAKE: "55-45-17"
+        N3XUS_HANDSHAKE: 55-45-17
     container_name: ledger-engine
     environment:
-      - N3XUS_HANDSHAKE=55-45-17
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
     ports:
-      - "3030:3030"
+    - 3021:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
-
   wallet-engine:
     build:
       context: ./services/wallet-engine
       args:
-        N3XUS_HANDSHAKE: "55-45-17"
+        N3XUS_HANDSHAKE: 55-45-17
     container_name: wallet-engine
     environment:
-      - N3XUS_HANDSHAKE=55-45-17
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
     ports:
-      - "3040:3040"
+    - 3030:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
-
   treasury-core:
     build:
       context: ./services/treasury-core
       args:
-        N3XUS_HANDSHAKE: "55-45-17"
+        N3XUS_HANDSHAKE: 55-45-17
     container_name: treasury-core
     environment:
-      - N3XUS_HANDSHAKE=55-45-17
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
     ports:
-      - "3041:3041"
+    - 3031:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
-
   payout-engine:
     build:
       context: ./services/payout-engine
       args:
-        N3XUS_HANDSHAKE: "55-45-17"
+        N3XUS_HANDSHAKE: 55-45-17
     container_name: payout-engine
     environment:
-      - N3XUS_HANDSHAKE=55-45-17
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
     ports:
-      - "3050:3050"
+    - 3032:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
-
   earnings-oracle:
     build:
       context: ./services/earnings-oracle
       args:
-        N3XUS_HANDSHAKE: "55-45-17"
+        N3XUS_HANDSHAKE: 55-45-17
     container_name: earnings-oracle
     environment:
-      - N3XUS_HANDSHAKE=55-45-17
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
     ports:
-      - "3051:3051"
+    - 3040:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
-
   pmmg-media-engine:
     build:
       context: ./services/pmmg-media-engine
       args:
-        N3XUS_HANDSHAKE: "55-45-17"
+        N3XUS_HANDSHAKE: 55-45-17
     container_name: pmmg-media-engine
     environment:
-      - N3XUS_HANDSHAKE=55-45-17
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
     ports:
-      - "3060:3060"
+    - 3041:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
-
   royalty-engine:
     build:
       context: ./services/royalty-engine
       args:
-        N3XUS_HANDSHAKE: "55-45-17"
+        N3XUS_HANDSHAKE: 55-45-17
     container_name: royalty-engine
     environment:
-      - N3XUS_HANDSHAKE=55-45-17
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
     ports:
-      - "3061:3061"
+    - 3042:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
-
   governance-core:
     build:
       context: ./services/governance-core
       args:
-        N3XUS_HANDSHAKE: "55-45-17"
+        N3XUS_HANDSHAKE: 55-45-17
     container_name: governance-core
     environment:
-      - N3XUS_HANDSHAKE=55-45-17
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
     ports:
-      - "3070:3070"
+    - 3050:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
-
   constitution-engine:
     build:
       context: ./services/constitution-engine
       args:
-        N3XUS_HANDSHAKE: "55-45-17"
+        N3XUS_HANDSHAKE: 55-45-17
     container_name: constitution-engine
     environment:
-      - N3XUS_HANDSHAKE=55-45-17
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
     ports:
-      - "3071:3071"
+    - 3051:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
-
-  # Nuisance Services: Compliance Layer
   payment-partner:
     build:
       context: ./services/payment-partner
       args:
-        N3XUS_HANDSHAKE: "55-45-17"
+        N3XUS_HANDSHAKE: 55-45-17
     container_name: payment-partner
     environment:
-      - N3XUS_HANDSHAKE=55-45-17
-      - PORT=4001
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
     ports:
-      - "4001:4001"
+    - 4001:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
-
   jurisdiction-rules:
     build:
       context: ./services/jurisdiction-rules
       args:
-        N3XUS_HANDSHAKE: "55-45-17"
+        N3XUS_HANDSHAKE: 55-45-17
     container_name: jurisdiction-rules
     environment:
-      - N3XUS_HANDSHAKE=55-45-17
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
     ports:
-      - "4002:4002"
+    - 4002:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
-
   responsible-gaming:
     build:
       context: ./services/responsible-gaming
       args:
-        N3XUS_HANDSHAKE: "55-45-17"
+        N3XUS_HANDSHAKE: 55-45-17
     container_name: responsible-gaming
     environment:
-      - N3XUS_HANDSHAKE=55-45-17
-      - PORT=4003
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
     ports:
-      - "4003:4003"
+    - 4003:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
-
   legal-entity:
     build:
       context: ./services/legal-entity
       args:
-        N3XUS_HANDSHAKE: "55-45-17"
+        N3XUS_HANDSHAKE: 55-45-17
     container_name: legal-entity
     environment:
-      - N3XUS_HANDSHAKE=55-45-17
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
     ports:
-      - "4004:4004"
+    - 4004:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
-
   explicit-opt-in:
     build:
       context: ./services/explicit-opt-in
       args:
-        N3XUS_HANDSHAKE: "55-45-17"
+        N3XUS_HANDSHAKE: 55-45-17
     container_name: explicit-opt-in
     environment:
-      - N3XUS_HANDSHAKE=55-45-17
-      - PORT=4005
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
     ports:
-      - "4005:4005"
+    - 4005:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
-
+  puabo-nexus-core:
+    build:
+      context: ./services/puabo-nexus-core
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: puabo-nexus-core
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4010:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  puabo-dsp-core:
+    build:
+      context: ./services/puabo-dsp-core
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: puabo-dsp-core
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4011:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  puabo-dsp-metadata-mgr:
+    build:
+      context: ./services/puabo-dsp-metadata-mgr
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: puabo-dsp-metadata-mgr
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4012:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  puabo-dsp-distribution:
+    build:
+      context: ./services/puabo-dsp-distribution
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: puabo-dsp-distribution
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4013:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  puabo-blac-core:
+    build:
+      context: ./services/puabo-blac-core
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: puabo-blac-core
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4014:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  puabo-blac-creator-hub:
+    build:
+      context: ./services/puabo-blac-creator-hub
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: puabo-blac-creator-hub
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4015:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  puabo-blac-marketplace:
+    build:
+      context: ./services/puabo-blac-marketplace
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: puabo-blac-marketplace
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4016:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  puabo-nuki-core:
+    build:
+      context: ./services/puabo-nuki-core
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: puabo-nuki-core
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4017:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  puabo-nuki-inventory-mgr:
+    build:
+      context: ./services/puabo-nuki-inventory-mgr
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: puabo-nuki-inventory-mgr
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4018:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  puabo-nuki-royalty:
+    build:
+      context: ./services/puabo-nuki-royalty
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: puabo-nuki-royalty
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4019:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  puaboverse-gateway:
+    build:
+      context: ./services/puaboverse-gateway
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: puaboverse-gateway
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4020:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  puaboverse-social:
+    build:
+      context: ./services/puaboverse-social
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: puaboverse-social
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4021:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  puaboverse-analytics:
+    build:
+      context: ./services/puaboverse-analytics
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: puaboverse-analytics
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4022:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  puabo-auth-service:
+    build:
+      context: ./services/puabo-auth-service
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: puabo-auth-service
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4023:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  puabo-notification-hub:
+    build:
+      context: ./services/puabo-notification-hub
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: puabo-notification-hub
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4024:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  puabo-search-engine:
+    build:
+      context: ./services/puabo-search-engine
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: puabo-search-engine
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4025:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  v-creative-studio:
+    build:
+      context: ./services/v-creative-studio
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: v-creative-studio
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4030:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  v-media-processor:
+    build:
+      context: ./services/v-media-processor
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: v-media-processor
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4031:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  v-rights-manager:
+    build:
+      context: ./services/v-rights-manager
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: v-rights-manager
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4032:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  v-distribution-engine:
+    build:
+      context: ./services/v-distribution-engine
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: v-distribution-engine
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4033:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  v-analytics-core:
+    build:
+      context: ./services/v-analytics-core
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: v-analytics-core
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4034:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  v-audience-insights:
+    build:
+      context: ./services/v-audience-insights
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: v-audience-insights
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4035:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  v-monetization-hub:
+    build:
+      context: ./services/v-monetization-hub
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: v-monetization-hub
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4036:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  v-collaboration-space:
+    build:
+      context: ./services/v-collaboration-space
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: v-collaboration-space
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4037:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  v-asset-library:
+    build:
+      context: ./services/v-asset-library
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: v-asset-library
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4038:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  v-workflow-engine:
+    build:
+      context: ./services/v-workflow-engine
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: v-workflow-engine
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4039:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  v-quality-control:
+    build:
+      context: ./services/v-quality-control
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: v-quality-control
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4040:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  v-archive-vault:
+    build:
+      context: ./services/v-archive-vault
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: v-archive-vault
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4041:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  v-api-gateway:
+    build:
+      context: ./services/v-api-gateway
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: v-api-gateway
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4042:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  data-lake-manager:
+    build:
+      context: ./services/data-lake-manager
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: data-lake-manager
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4051:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  ml-training-service:
+    build:
+      context: ./services/ml-training-service
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: ml-training-service
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4052:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  ml-inference-engine:
+    build:
+      context: ./services/ml-inference-engine
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: ml-inference-engine
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4053:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  recommendation-engine:
+    build:
+      context: ./services/recommendation-engine
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: recommendation-engine
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4054:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  fraud-detection:
+    build:
+      context: ./services/fraud-detection
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: fraud-detection
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4055:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  kyc-verification:
+    build:
+      context: ./services/kyc-verification
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: kyc-verification
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4056:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  aml-screening:
+    build:
+      context: ./services/aml-screening
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: aml-screening
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4057:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  content-moderation:
+    build:
+      context: ./services/content-moderation
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: content-moderation
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4058:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  abuse-prevention:
+    build:
+      context: ./services/abuse-prevention
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: abuse-prevention
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4059:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  geolocation-service:
+    build:
+      context: ./services/geolocation-service
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: geolocation-service
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4060:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  tax-compliance:
+    build:
+      context: ./services/tax-compliance
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: tax-compliance
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4061:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  regulatory-reporting:
+    build:
+      context: ./services/regulatory-reporting
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: regulatory-reporting
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4062:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  audit-trail:
+    build:
+      context: ./services/audit-trail
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: audit-trail
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4063:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  backup-service:
+    build:
+      context: ./services/backup-service
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: backup-service
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4064:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  disaster-recovery:
+    build:
+      context: ./services/disaster-recovery
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: disaster-recovery
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4065:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  cdn-manager:
+    build:
+      context: ./services/cdn-manager
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: cdn-manager
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4066:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  cache-coordinator:
+    build:
+      context: ./services/cache-coordinator
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: cache-coordinator
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4067:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  queue-manager:
+    build:
+      context: ./services/queue-manager
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: queue-manager
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4068:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  event-bus:
+    build:
+      context: ./services/event-bus
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: event-bus
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4069:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  webhook-dispatcher:
+    build:
+      context: ./services/webhook-dispatcher
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: webhook-dispatcher
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4070:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  email-service:
+    build:
+      context: ./services/email-service
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: email-service
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4071:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  sms-service:
+    build:
+      context: ./services/sms-service
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: sms-service
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4072:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  push-notification:
+    build:
+      context: ./services/push-notification
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: push-notification
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4073:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  file-storage:
+    build:
+      context: ./services/file-storage
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: file-storage
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4074:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  object-storage:
+    build:
+      context: ./services/object-storage
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: object-storage
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4075:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  encryption-service:
+    build:
+      context: ./services/encryption-service
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: encryption-service
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4076:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  key-management:
+    build:
+      context: ./services/key-management
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: key-management
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4077:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  certificate-authority:
+    build:
+      context: ./services/certificate-authority
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: certificate-authority
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4078:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  session-manager:
+    build:
+      context: ./services/session-manager
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: session-manager
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4079:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  rate-limiter:
+    build:
+      context: ./services/rate-limiter
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: rate-limiter
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4080:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  circuit-breaker:
+    build:
+      context: ./services/circuit-breaker
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: circuit-breaker
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4081:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  load-balancer-config:
+    build:
+      context: ./services/load-balancer-config
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: load-balancer-config
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4082:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  service-mesh-control:
+    build:
+      context: ./services/service-mesh-control
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: service-mesh-control
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4083:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  api-versioning:
+    build:
+      context: ./services/api-versioning
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: api-versioning
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4084:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  schema-registry:
+    build:
+      context: ./services/schema-registry
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: schema-registry
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4085:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  feature-flags:
+    build:
+      context: ./services/feature-flags
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: feature-flags
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4086:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  ab-testing:
+    build:
+      context: ./services/ab-testing
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: ab-testing
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4087:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  performance-monitor:
+    build:
+      context: ./services/performance-monitor
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: performance-monitor
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4088:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  log-aggregator:
+    build:
+      context: ./services/log-aggregator
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: log-aggregator
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4089:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  metrics-collector:
+    build:
+      context: ./services/metrics-collector
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: metrics-collector
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4090:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  tracing-service:
+    build:
+      context: ./services/tracing-service
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: tracing-service
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4091:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  alerting-engine:
+    build:
+      context: ./services/alerting-engine
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: alerting-engine
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4092:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  incident-manager:
+    build:
+      context: ./services/incident-manager
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: incident-manager
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4093:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  status-page:
+    build:
+      context: ./services/status-page
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: status-page
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4094:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  documentation-hub:
+    build:
+      context: ./services/documentation-hub
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: documentation-hub
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4095:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  developer-portal:
+    build:
+      context: ./services/developer-portal
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: developer-portal
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4096:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  sandbox-environment:
+    build:
+      context: ./services/sandbox-environment
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: sandbox-environment
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4097:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  integration-testing:
+    build:
+      context: ./services/integration-testing
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: integration-testing
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4098:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+  chaos-engineering:
+    build:
+      context: ./services/chaos-engineering
+      args:
+        N3XUS_HANDSHAKE: 55-45-17
+    container_name: chaos-engineering
+    environment:
+      N3XUS_HANDSHAKE: 55-45-17
+      DATABASE_URL: postgresql://nexus:nexus_secure_pass@postgres:5432/nexus_db
+      REDIS_URL: redis://redis:6379
+    ports:
+    - 4099:3000
+    networks:
+    - nexus-net
+    depends_on:
+    - postgres
+    - redis
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - curl -f http://localhost:3000/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
 networks:
-  default:
+  nexus-net:
     driver: bridge
+volumes:
+  postgres-data: {}
+  redis-data: {}

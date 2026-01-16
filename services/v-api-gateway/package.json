@@ -1,0 +1,9 @@
+{
+  "name": "v-api-gateway",
+  "version": "3.0.0",
+  "description": "V-Suite API Gateway",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
