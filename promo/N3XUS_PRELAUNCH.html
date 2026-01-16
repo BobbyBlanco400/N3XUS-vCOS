@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>N3XUS v-COS | The Wait Is Over</title>
+    <title>N3XUS v-COS | 72-Hour Codespaces Launch</title>
     <style>
         * {
             margin: 0;
@@ -258,8 +258,8 @@
     </div>
     
     <div class="countdown">
-        <div id="countdown-days">3</div>
-        <div class="countdown-label">DAYS UNTIL LAUNCH</div>
+        <div id="countdown-hours">72</div>
+        <div class="countdown-label">HOURS TO LAUNCH</div>
     </div>
     
     <div class="scene">
@@ -286,8 +286,8 @@
             Powered by VPS-72.62.86.217 | 13 Services | Phase 3-9
         </div>
         
-        <button class="cta" onclick="window.location.href='https://github.com/BobbyBlanco400/N3XUS-vCOS'">
-            Join the Founders Program
+        <button class="cta" onclick="window.open('https://beta.n3xuscos.online/?utm_source=founders_video&utm_medium=cta&utm_campaign=72h_codespaces_launch', '_blank', 'noopener,noreferrer')">
+            Join The Founder's Program
         </button>
     </div>
     
@@ -304,15 +304,15 @@
             }
         }
         
-        // Countdown animation
+        // Countdown animation (72-hour window)
         function animateCountdown() {
-            const countdownEl = document.getElementById('countdown-days');
-            let days = 3;
+            const countdownEl = document.getElementById('countdown-hours');
+            let hours = 72;
             
             setInterval(() => {
-                if (days > 0) {
-                    days--;
-                    countdownEl.textContent = days;
+                if (hours > 0) {
+                    hours--;
+                    countdownEl.textContent = hours;
                     countdownEl.style.animation = 'none';
                     setTimeout(() => {
                         countdownEl.style.animation = 'pulse 2s infinite';
@@ -321,7 +321,7 @@
                     countdownEl.textContent = 'LIVE';
                     countdownEl.style.color = '#00ff00';
                 }
-            }, 15000); // Every 15 seconds for demo (would be daily in production)
+            }, 15000); // Every 15 seconds for demo (would be hourly in production: 3600000ms)
         }
         
         // Initialize
