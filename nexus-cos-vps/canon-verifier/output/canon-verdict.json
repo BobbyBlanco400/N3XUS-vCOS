@@ -1,33 +1,34 @@
 {
-  "timestamp": "2026-01-09T09:52:28Z",
+  "timestamp": "2026-01-16T19:40:53Z",
   "verdict": {
-    "verified_systems": [],
+    "verified_systems": [
+      {
+        "name": "Auth Service",
+        "responsibility": "User authentication and identity management",
+        "evidence": "HTTP 200"
+      },
+      {
+        "name": "Streaming Service",
+        "responsibility": "Real-time streaming and WebSocket management",
+        "evidence": "HTTP 200"
+      }
+    ],
     "degraded_systems": [],
     "ornamental_systems": [],
     "critical_blockers": [
       {
         "service": "Backend API",
-        "issue": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it",
+        "issue": "Connection failed: [Errno 111] Connection refused",
         "severity": "critical"
       },
       {
         "service": "Backend System Status",
-        "issue": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it",
-        "severity": "critical"
-      },
-      {
-        "service": "Auth Service",
-        "issue": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it",
-        "severity": "critical"
-      },
-      {
-        "service": "Streaming Service",
-        "issue": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it",
+        "issue": "Connection failed: [Errno 111] Connection refused",
         "severity": "critical"
       }
     ],
     "executive_truth": "Partially operational architecture",
-    "rationale": "4 critical blocker(s) prevent full operation"
+    "rationale": "2 critical blocker(s) prevent full operation"
   },
   "phase_results_analyzed": [
     "inventory",

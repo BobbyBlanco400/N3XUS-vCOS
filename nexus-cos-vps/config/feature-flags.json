@@ -50,6 +50,24 @@
       "category": "creator",
       "requires": []
     },
+    "OTT_STREAMING_ENABLED": {
+      "enabled": false,
+      "description": "Phase 2.5: OTT V-Suite streaming platform",
+      "type": "boolean",
+      "default": false,
+      "category": "ott",
+      "requires": [],
+      "exposure": "internal_only"
+    },
+    "N3X_UP_ARENA_ENABLED": {
+      "enabled": false,
+      "description": "Phase 3: N3X-UP Battle Arena competitive gaming",
+      "type": "boolean",
+      "default": false,
+      "category": "gaming",
+      "requires": [],
+      "exposure": "internal_only"
+    },
     "FOUNDER_BETA_MODE": {
       "enabled": true,
       "description": "Founder beta access mode",

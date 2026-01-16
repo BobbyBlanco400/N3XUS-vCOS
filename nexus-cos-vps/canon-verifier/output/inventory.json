@@ -1,13 +1,563 @@
 {
-  "timestamp": "2026-01-09T09:52:11Z",
-  "docker_containers": [],
+  "timestamp": "2026-01-16T19:40:50Z",
+  "docker_containers": [
+    {
+      "id": "ecaabcf2764e",
+      "name": "jurisdiction-rules",
+      "image": "n3xus-vcos-jurisdiction-rules",
+      "status": "Up 2 hours",
+      "ports": "0.0.0.0:4002->4002/tcp, [::]:4002->4002/tcp",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "71be66d91f39",
+      "name": "federation-gateway",
+      "image": "n3xus-vcos-federation-gateway",
+      "status": "Up 2 hours",
+      "ports": "0.0.0.0:3012->3000/tcp, [::]:3012->3000/tcp",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "1fa70a574f25",
+      "name": "ledger-engine",
+      "image": "n3xus-vcos-ledger-engine",
+      "status": "Up 2 hours",
+      "ports": "0.0.0.0:3030->3030/tcp, [::]:3030->3030/tcp",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "ddfc87aa4d19",
+      "name": "royalty-engine",
+      "image": "n3xus-vcos-royalty-engine",
+      "status": "Up 2 hours",
+      "ports": "0.0.0.0:3061->3061/tcp, [::]:3061->3061/tcp",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "d789ce08caa1",
+      "name": "treasury-core",
+      "image": "n3xus-vcos-treasury-core",
+      "status": "Up 2 hours",
+      "ports": "0.0.0.0:3041->3041/tcp, [::]:3041->3041/tcp",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "e2eba39ac120",
+      "name": "constitution-engine",
+      "image": "n3xus-vcos-constitution-engine",
+      "status": "Up 2 hours",
+      "ports": "0.0.0.0:3071->3071/tcp, [::]:3071->3071/tcp",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "338b3d579721",
+      "name": "attestation-service",
+      "image": "n3xus-vcos-attestation-service",
+      "status": "Up 2 hours",
+      "ports": "0.0.0.0:3013->3000/tcp, [::]:3013->3000/tcp",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "5c37216382cd",
+      "name": "legal-entity",
+      "image": "n3xus-vcos-legal-entity",
+      "status": "Up 2 hours",
+      "ports": "0.0.0.0:4004->4004/tcp, [::]:4004->4004/tcp",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "1f1546efaea2",
+      "name": "pmmg-media-engine",
+      "image": "n3xus-vcos-pmmg-media-engine",
+      "status": "Up 2 hours",
+      "ports": "0.0.0.0:3060->3060/tcp, [::]:3060->3060/tcp",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "4c8e4df88350",
+      "name": "payout-engine",
+      "image": "n3xus-vcos-payout-engine",
+      "status": "Up 2 hours",
+      "ports": "0.0.0.0:3050->3050/tcp, [::]:3050->3050/tcp",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "8d89790514c5",
+      "name": "earnings-oracle",
+      "image": "n3xus-vcos-earnings-oracle",
+      "status": "Up 2 hours",
+      "ports": "0.0.0.0:3051->3051/tcp, [::]:3051->3051/tcp",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "b0451a70f224",
+      "name": "explicit-opt-in",
+      "image": "n3xus-vcos-explicit-opt-in",
+      "status": "Up 2 hours",
+      "ports": "0.0.0.0:4005->4005/tcp, [::]:4005->4005/tcp",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "5d2bbf756b05",
+      "name": "responsible-gaming",
+      "image": "n3xus-vcos-responsible-gaming",
+      "status": "Up 2 hours",
+      "ports": "0.0.0.0:4003->4003/tcp, [::]:4003->4003/tcp",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "1d1cb6adeb9b",
+      "name": "payment-partner",
+      "image": "n3xus-vcos-payment-partner",
+      "status": "Up 2 hours",
+      "ports": "0.0.0.0:4001->4001/tcp, [::]:4001->4001/tcp",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "daa987b5b8f7",
+      "name": "casino-core",
+      "image": "n3xus-vcos-casino-core",
+      "status": "Up 2 hours",
+      "ports": "0.0.0.0:3020->3020/tcp, [::]:3020->3020/tcp",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "ba1ece7bd13c",
+      "name": "governance-core",
+      "image": "n3xus-vcos-governance-core",
+      "status": "Up 2 hours",
+      "ports": "0.0.0.0:3070->3070/tcp, [::]:3070->3070/tcp",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "8112cec93abe",
+      "name": "wallet-engine",
+      "image": "n3xus-vcos-wallet-engine",
+      "status": "Up 2 hours",
+      "ports": "0.0.0.0:3040->3040/tcp, [::]:3040->3040/tcp",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "944dec92f44c",
+      "name": "federation-spine",
+      "image": "n3xus-vcos-federation-spine",
+      "status": "Up 2 hours",
+      "ports": "0.0.0.0:3010->3000/tcp, [::]:3010->3000/tcp",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "6e67e8046b60",
+      "name": "v-supercore",
+      "image": "n3xus-vcos-v-supercore",
+      "status": "Up 2 hours (unhealthy)",
+      "ports": "0.0.0.0:3001->3000/tcp, [::]:3001->3000/tcp",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "32026f1ac2a8",
+      "name": "identity-registry",
+      "image": "n3xus-vcos-identity-registry",
+      "status": "Up 2 hours",
+      "ports": "0.0.0.0:3011->3000/tcp, [::]:3011->3000/tcp",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "f9e2c301716c",
+      "name": "puabo-api-ai-hf",
+      "image": "n3xus-vcos-puabo-api-ai-hf",
+      "status": "Up 2 hours (unhealthy)",
+      "ports": "0.0.0.0:3002->3000/tcp, [::]:3002->3000/tcp",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "e5341ead9577",
+      "name": "puabo_api_ai_hf-codespaces",
+      "image": "n3xus-vcos-puabo_api_ai_hf",
+      "status": "Restarting (0) 52 seconds ago",
+      "ports": "",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "7f98b7b85854",
+      "name": "puaboverse-v2",
+      "image": "n3xus-vcos-puaboverse-v2",
+      "status": "Restarting (0) 54 seconds ago",
+      "ports": "",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "699d17f8d01c",
+      "name": "puabo-nexus-driver-app-backend",
+      "image": "n3xus-vcos-puabo-nexus-driver-app-backend",
+      "status": "Restarting (0) 53 seconds ago",
+      "ports": "",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "45dd19b9f29f",
+      "name": "puabo-nuki-inventory-mgr",
+      "image": "n3xus-vcos-puabo-nuki-inventory-mgr",
+      "status": "Restarting (0) 52 seconds ago",
+      "ports": "",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "8e48722a9aee",
+      "name": "puabo-dsp-metadata-mgr",
+      "image": "n3xus-vcos-puabo-dsp-metadata-mgr",
+      "status": "Restarting (0) 55 seconds ago",
+      "ports": "",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "c1d8264c3b88",
+      "name": "ledger-mgr",
+      "image": "n3xus-vcos-ledger-mgr",
+      "status": "Restarting (0) 54 seconds ago",
+      "ports": "",
+      "runtime_type": "docker"
+    },
+    {
+      "id": "e1b6e7107a8f",
+      "name": "founding-creatives",
+      "image": "n3xus-vcos-founding-creatives",
+      "status": "Restarting (0) 55 seconds ago",
+      "ports": "",
+      "runtime_type": "docker"
+    }
+  ],
   "pm2_processes": [],
-  "listening_ports": [],
+  "listening_ports": [
+    {
+      "port": "40187",
+      "address": "127.0.0.1:40187",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096         127.0.0.1:40187      0.0.0.0:*"
+    },
+    {
+      "port": "2000",
+      "address": "0.0.0.0:2000",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      128            0.0.0.0:2000       0.0.0.0:*"
+    },
+    {
+      "port": "53",
+      "address": "127.0.0.53%lo:53",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096     127.0.0.53%lo:53         0.0.0.0:*"
+    },
+    {
+      "port": "5666",
+      "address": "127.0.0.1:5666",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      511          127.0.0.1:5666       0.0.0.0:*    users:((\"node\",pid=106201,fd=44))"
+    },
+    {
+      "port": "4005",
+      "address": "0.0.0.0:4005",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096           0.0.0.0:4005       0.0.0.0:*"
+    },
+    {
+      "port": "4004",
+      "address": "0.0.0.0:4004",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096           0.0.0.0:4004       0.0.0.0:*"
+    },
+    {
+      "port": "4003",
+      "address": "0.0.0.0:4003",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096           0.0.0.0:4003       0.0.0.0:*"
+    },
+    {
+      "port": "4002",
+      "address": "0.0.0.0:4002",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096           0.0.0.0:4002       0.0.0.0:*"
+    },
+    {
+      "port": "4001",
+      "address": "0.0.0.0:4001",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096           0.0.0.0:4001       0.0.0.0:*"
+    },
+    {
+      "port": "41697",
+      "address": "127.0.0.1:41697",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      511          127.0.0.1:41697      0.0.0.0:*    users:((\"node\",pid=629,fd=21))"
+    },
+    {
+      "port": "2222",
+      "address": "0.0.0.0:2222",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      128            0.0.0.0:2222       0.0.0.0:*"
+    },
+    {
+      "port": "16634",
+      "address": "127.0.0.1:16634",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      512          127.0.0.1:16634      0.0.0.0:*"
+    },
+    {
+      "port": "16635",
+      "address": "127.0.0.1:16635",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      512          127.0.0.1:16635      0.0.0.0:*"
+    },
+    {
+      "port": "3002",
+      "address": "0.0.0.0:3002",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096           0.0.0.0:3002       0.0.0.0:*"
+    },
+    {
+      "port": "3001",
+      "address": "0.0.0.0:3001",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096           0.0.0.0:3001       0.0.0.0:*"
+    },
+    {
+      "port": "3013",
+      "address": "0.0.0.0:3013",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096           0.0.0.0:3013       0.0.0.0:*"
+    },
+    {
+      "port": "3012",
+      "address": "0.0.0.0:3012",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096           0.0.0.0:3012       0.0.0.0:*"
+    },
+    {
+      "port": "3011",
+      "address": "0.0.0.0:3011",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096           0.0.0.0:3011       0.0.0.0:*"
+    },
+    {
+      "port": "3010",
+      "address": "0.0.0.0:3010",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096           0.0.0.0:3010       0.0.0.0:*"
+    },
+    {
+      "port": "3020",
+      "address": "0.0.0.0:3020",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096           0.0.0.0:3020       0.0.0.0:*"
+    },
+    {
+      "port": "3030",
+      "address": "0.0.0.0:3030",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096           0.0.0.0:3030       0.0.0.0:*"
+    },
+    {
+      "port": "3041",
+      "address": "0.0.0.0:3041",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096           0.0.0.0:3041       0.0.0.0:*"
+    },
+    {
+      "port": "3040",
+      "address": "0.0.0.0:3040",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096           0.0.0.0:3040       0.0.0.0:*"
+    },
+    {
+      "port": "3051",
+      "address": "0.0.0.0:3051",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096           0.0.0.0:3051       0.0.0.0:*"
+    },
+    {
+      "port": "3050",
+      "address": "0.0.0.0:3050",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096           0.0.0.0:3050       0.0.0.0:*"
+    },
+    {
+      "port": "3061",
+      "address": "0.0.0.0:3061",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096           0.0.0.0:3061       0.0.0.0:*"
+    },
+    {
+      "port": "3060",
+      "address": "0.0.0.0:3060",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096           0.0.0.0:3060       0.0.0.0:*"
+    },
+    {
+      "port": "3071",
+      "address": "0.0.0.0:3071",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096           0.0.0.0:3071       0.0.0.0:*"
+    },
+    {
+      "port": "3070",
+      "address": "0.0.0.0:3070",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096           0.0.0.0:3070       0.0.0.0:*"
+    },
+    {
+      "port": "2000",
+      "address": "[::]:2000",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      128               [::]:2000          [::]:*"
+    },
+    {
+      "port": "16634",
+      "address": "[::1]:16634",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      512              [::1]:16634         [::]:*"
+    },
+    {
+      "port": "16635",
+      "address": "[::1]:16635",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      512              [::1]:16635         [::]:*"
+    },
+    {
+      "port": "4005",
+      "address": "[::]:4005",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096              [::]:4005          [::]:*"
+    },
+    {
+      "port": "4004",
+      "address": "[::]:4004",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096              [::]:4004          [::]:*"
+    },
+    {
+      "port": "4003",
+      "address": "[::]:4003",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096              [::]:4003          [::]:*"
+    },
+    {
+      "port": "4002",
+      "address": "[::]:4002",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096              [::]:4002          [::]:*"
+    },
+    {
+      "port": "4001",
+      "address": "[::]:4001",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096              [::]:4001          [::]:*"
+    },
+    {
+      "port": "2222",
+      "address": "[::]:2222",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      128               [::]:2222          [::]:*"
+    },
+    {
+      "port": "3002",
+      "address": "[::]:3002",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096              [::]:3002          [::]:*"
+    },
+    {
+      "port": "3001",
+      "address": "[::]:3001",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096              [::]:3001          [::]:*"
+    },
+    {
+      "port": "3013",
+      "address": "[::]:3013",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096              [::]:3013          [::]:*"
+    },
+    {
+      "port": "3012",
+      "address": "[::]:3012",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096              [::]:3012          [::]:*"
+    },
+    {
+      "port": "3011",
+      "address": "[::]:3011",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096              [::]:3011          [::]:*"
+    },
+    {
+      "port": "3010",
+      "address": "[::]:3010",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096              [::]:3010          [::]:*"
+    },
+    {
+      "port": "3020",
+      "address": "[::]:3020",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096              [::]:3020          [::]:*"
+    },
+    {
+      "port": "3030",
+      "address": "[::]:3030",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096              [::]:3030          [::]:*"
+    },
+    {
+      "port": "3041",
+      "address": "[::]:3041",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096              [::]:3041          [::]:*"
+    },
+    {
+      "port": "3040",
+      "address": "[::]:3040",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096              [::]:3040          [::]:*"
+    },
+    {
+      "port": "3051",
+      "address": "[::]:3051",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096              [::]:3051          [::]:*"
+    },
+    {
+      "port": "3050",
+      "address": "[::]:3050",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096              [::]:3050          [::]:*"
+    },
+    {
+      "port": "3061",
+      "address": "[::]:3061",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096              [::]:3061          [::]:*"
+    },
+    {
+      "port": "3060",
+      "address": "[::]:3060",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096              [::]:3060          [::]:*"
+    },
+    {
+      "port": "3071",
+      "address": "[::]:3071",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096              [::]:3071          [::]:*"
+    },
+    {
+      "port": "3070",
+      "address": "[::]:3070",
+      "protocol": "tcp",
+      "raw": "tcp   LISTEN 0      4096              [::]:3070          [::]:*"
+    }
+  ],
   "system_load": {
-    "load_1min": 0,
-    "load_5min": 0,
-    "load_15min": 0,
-    "raw": ""
+    "load_1min": 1.01,
+    "load_5min": 0.5,
+    "load_15min": 0.4,
+    "raw": "19:40:50 up  1:46,  0 user,  load average: 1.01, 0.50, 0.40"
   },
-  "total_runtime_units": 0
+  "total_runtime_units": 28
 }

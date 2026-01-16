@@ -1,18 +1,18 @@
 {
-  "timestamp": "2026-01-09T09:52:28Z",
+  "timestamp": "2026-01-16T19:40:53Z",
   "service_responsibility_matrix": [
     {
       "service_name": "Backend API",
       "claimed_responsibility": "Core API gateway and service orchestration",
       "source_path": "backend/",
       "proof_type": "HTTP response",
-      "observed_behavior": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it",
+      "observed_behavior": "Connection failed: [Errno 111] Connection refused",
       "canon_status": "BLOCKED",
       "endpoint": "http://localhost:3000/api/health",
       "evidence": {
         "is_operational": false,
         "status_code": null,
-        "response": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it"
+        "response": "Connection failed: [Errno 111] Connection refused"
       }
     },
     {
@@ -20,13 +20,13 @@
       "claimed_responsibility": "System health monitoring and status reporting",
       "source_path": "backend/",
       "proof_type": "HTTP response",
-      "observed_behavior": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it",
+      "observed_behavior": "Connection failed: [Errno 111] Connection refused",
       "canon_status": "BLOCKED",
-      "endpoint": "http://localhost:3000/api/system/status",
+      "endpoint": "http://localhost:4000/api/system/status",
       "evidence": {
         "is_operational": false,
         "status_code": null,
-        "response": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it"
+        "response": "Connection failed: [Errno 111] Connection refused"
       }
     },
     {
@@ -34,13 +34,13 @@
       "claimed_responsibility": "User authentication and identity management",
       "source_path": "backend/services/auth",
       "proof_type": "HTTP response",
-      "observed_behavior": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it",
-      "canon_status": "BLOCKED",
-      "endpoint": "http://localhost:3000/api/services/auth/health",
+      "observed_behavior": "HTTP 200",
+      "canon_status": "VERIFIED",
+      "endpoint": "http://localhost:3001/health",
       "evidence": {
-        "is_operational": false,
-        "status_code": null,
-        "response": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it"
+        "is_operational": true,
+        "status_code": 200,
+        "response": "HTTP 200"
       }
     },
     {
@@ -48,13 +48,13 @@
       "claimed_responsibility": "Real-time streaming and WebSocket management",
       "source_path": "services/streaming",
       "proof_type": "HTTP response",
-      "observed_behavior": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it",
-      "canon_status": "BLOCKED",
-      "endpoint": "http://localhost:3000/api/services/streaming/health",
+      "observed_behavior": "HTTP 200",
+      "canon_status": "VERIFIED",
+      "endpoint": "http://localhost:3002/health",
       "evidence": {
-        "is_operational": false,
-        "status_code": null,
-        "response": "Connection failed: [WinError 10061] No connection could be made because the target machine actively refused it"
+        "is_operational": true,
+        "status_code": 200,
+        "response": "HTTP 200"
       }
     },
     {
@@ -115,9 +115,9 @@
   ],
   "analysis": {
     "total_services": 9,
-    "verified": 0,
+    "verified": 2,
     "degraded": 0,
-    "blocked": 9,
+    "blocked": 7,
     "ornamental": 0,
     "services_with_evidence": 4,
     "services_with_runtime": 5
