@@ -145,13 +145,43 @@ else
 fi
 
 echo ""
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "6. Logo Verification (N3XUS LAW 55-45-17)"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo ""
+
+# Verify canonical logo exists
+if [ -f "branding/official/N3XUS-vCOS.png" ]; then
+    LOGO_SIZE=$(stat -f%z "branding/official/N3XUS-vCOS.png" 2>/dev/null || stat -c%s "branding/official/N3XUS-vCOS.png" 2>/dev/null || echo "0")
+    if [ "$LOGO_SIZE" -gt 1000 ]; then
+        echo -e "${GREEN}✅${NC} Canonical logo verified: branding/official/N3XUS-vCOS.png ($LOGO_SIZE bytes)"
+    else
+        echo -e "${RED}❌${NC} Canonical logo file is too small ($LOGO_SIZE bytes)"
+        echo "   Please upload the official N3XUS v-COS logo to: branding/official/N3XUS-vCOS.png"
+        echo "   See: branding/official/LOGO_UPLOAD_REQUIRED.md"
+        exit 1
+    fi
+else
+    echo -e "${RED}❌${NC} Canonical logo not found: branding/official/N3XUS-vCOS.png"
+    echo "   System cannot start without official branding."
+    echo "   See: branding/official/LOGO_UPLOAD_REQUIRED.md"
+    echo ""
+    echo "   Steps to fix:"
+    echo "   1. Place logo at: branding/official/N3XUS-vCOS.png"
+    echo "   2. Run: bash scripts/deploy-holographic-logo.sh"
+    echo "   3. Run: bash scripts/bootstrap.sh (this script)"
+    exit 1
+fi
+
+echo ""
 echo "╔════════════════════════════════════════════════════════════╗"
 echo "║                  BOOTSTRAP COMPLETE                        ║"
 echo "╚════════════════════════════════════════════════════════════╝"
 echo ""
 echo "Next steps:"
-echo "  1. Review .env file for any custom configuration"
-echo "  2. Run: bash scripts/full-stack-launch.sh"
-echo "  3. Verify: bash scripts/verify-launch.sh"
+echo "  1. Deploy logo (if not done): bash scripts/deploy-holographic-logo.sh"
+echo "  2. Review .env file for any custom configuration"
+echo "  3. Run: bash scripts/full-stack-launch.sh"
+echo "  4. Verify: bash scripts/verify-launch.sh"
 echo ""
 echo -e "${GREEN}Environment ready for N3XUS COS v3.0 deployment${NC}"
