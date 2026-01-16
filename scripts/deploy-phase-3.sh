@@ -6,9 +6,9 @@ VPS_HOST="root@72.62.86.217"
 VPS_KEY="$HOME/.ssh/id_ed25519_vps"
 
 echo "╔════════════════════════════════════════════════════════════╗"
-echo "║   N3XUS v-COS Canonical Phases 3 & 4 Deployment           ║"
+echo "║   N3XUS v-COS Canonical Phases 3-9 Deployment             ║"
 echo "║   Continuing from Phases 1, 2, 2.5                        ║"
-echo "║   Then 48-hour settle mode                                ║"
+echo "║   Deploy 13 services → 48hr settle → Active Jan 19        ║"
 echo "╚════════════════════════════════════════════════════════════╝"
 echo ""
 echo "Waiting for VPS to become accessible..."
@@ -93,19 +93,37 @@ sleep 20
 echo "✅ Phase 4 Domain Services deployed!"
 echo ""
 
+echo "Step 5: Deploy Phase 9 - Financial Services"
+echo "  - wallet-engine (wallet management)"
+echo "  - treasury-core (treasury operations)"
+echo "  - payout-engine (payout processing)"
+echo ""
+
+docker compose -f docker-compose.full.yml up -d --build \
+    wallet-engine \
+    treasury-core \
+    payout-engine
+
+sleep 25
+
+echo "✅ Phase 9 Financial Services deployed!"
+echo ""
+
 echo "╔════════════════════════════════════════════════════════════╗"
-echo "║        Phases 3 & 4 Deployment Complete!                  ║"
-echo "║        Entering 48-hour Settle Mode                       ║"
+echo "║        Phases 3-9 Deployment Complete!                     ║"
+echo "║        Entering 48-hour Settle Mode                        ║"
+echo "║        Active on January 19, 2026                          ║"
 echo "╚════════════════════════════════════════════════════════════╝"
 echo ""
 
 # Status check
 RUNNING=$(docker compose -f docker-compose.full.yml ps 2>/dev/null | grep -c "Up")
-echo "Services Running: $RUNNING / 10"
+echo "Services Running: $RUNNING / 13"
 echo "  - 2 Infrastructure (Postgres, Redis)"
-echo "  - 2 Core Runtime (Phase 1-2)"
-echo "  - 4 Federation (Phase 3)"
-echo "  - 2 Domain Services (Phase 4)"
+echo "  - 2 Phase 3-4 Core Runtime"
+echo "  - 4 Phase 5-6 Federation"
+echo "  - 2 Phase 7-8 Domain Services"
+echo "  - 3 Phase 9 Financial Services"
 echo ""
 
 # Resources
@@ -134,14 +152,18 @@ fi
 
 echo ""
 echo "Deployment Status:"
-echo "  ✅ Phase 1 & 2: Complete"
+echo "  ✅ Phase 1 & 2: Complete (Foundation)"
 echo "  ✅ Phase 2.5: Complete"
-echo "  ✅ Phase 3: Complete (Federation Layer)"
-echo "  ✅ Phase 4: Complete (Domain Services)"
+echo "  ✅ Phase 3-4: Complete (Core Runtime)"
+echo "  ✅ Phase 5-6: Complete (Federation)"
+echo "  ✅ Phase 7-8: Complete (Domain Services)"
+echo "  ✅ Phase 9: Complete (Financial Services)"
 echo "  ⏸️  Settle Mode: Active for 48 hours"
 echo ""
-echo "System will stabilize and monitor for 48 hours."
-echo "Next deployment window: $(date -d '+2 days' '+%B %d, %Y')"
+echo "Settle Period: January 16-18, 2026"
+echo "System Active: January 19, 2026"
+echo ""
+echo "13 services operational and stabilizing..."
 PHASE3
 
 echo ""
